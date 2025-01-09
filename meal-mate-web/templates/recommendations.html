@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Recommendations</title>
+</head>
+<body>
+    <h1>Today's Food Recommendations</h1>
+    <ul>
+        {% for meal in meals %}
+            <li>{{ meal['name'] }}: {{ meal['description'] }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('index') }}">Go Back to Home</a>
+</body>
+</html>
