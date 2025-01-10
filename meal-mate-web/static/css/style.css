@@ -1,24 +1,68 @@
-/* static/css/styles.css */
+/* General Styling */
 body {
-    background-color: #f8f9fa;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f9f9f9;
 }
 
 h1 {
-    color: #343a40;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    color: #333;
 }
 
-.form-control {
-    border-radius: 0.25rem;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075);
+button {
+    font-weight: 500;
+    border-radius: 30px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.btn-primary {
-    background-color: #007bff;
-    border: none;
+/* Hover effects for buttons */
+button:hover {
+    background-color: #0056b3;
     color: white;
+    transform: scale(1.05);
 }
 
-.container {
-    max-width: 600px;
-    margin-top: 30px;
+.meal-card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: white;
+}
+
+.meal-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Meal Card Image */
+.card-img-top {
+    border-radius: 10px 10px 0 0;
+}
+
+/* Cards Content */
+.card-body {
+    padding: 20px;
+}
+
+/* Badge Styling */
+.badge-info {
+    background-color: #17a2b8;
+}
+
+.badge-success {
+    background-color: #28a745;
+}
+
+/* Collapse styling for ingredients */
+.collapse ul {
+    list-style-type: none;
+    padding-left: 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.collapse ul li {
+    margin: 5px 0;
 }

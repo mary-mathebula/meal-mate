@@ -4,11 +4,147 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meal Mate</title>
+    <!-- Include Google Font for modern typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Include Bootstrap for responsive grid and components -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Include custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            margin-top: 30px;
+            color: #444;
+        }
+
+        .hero-section {
+            background-image: url('https://images.unsplash.com/photo-1574169208503-9ff2465b5dff'); 
+            background-size: cover;
+            background-position: center;
+            height: 400px;
+            color: white;
+            text-align: center;
+            padding-top: 150px;
+        }
+
+        .hero-section h1 {
+            font-size: 3rem;
+            font-weight: 600;
+        }
+
+        .cta-btn {
+            background-color: #FF6347;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-transform: uppercase;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .cta-btn:hover {
+            background-color: #e55b43;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .feature-card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: scale(1.05);
+        }
+
+        .feature-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .feature-card .card-body {
+            background-color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .feature-card .card-title {
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        .feature-card .card-text {
+            color: #666;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to Meal Mate</h1>
-    <a href="{{ url_for('create_profile') }}">Create Profile</a>
-    <a href="{{ url_for('recommendations') }}">View Recommendations</a>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <h1>Welcome to Meal Mate</h1>
+        <a href="{{ url_for('create_profile') }}" class="cta-btn">Create Profile</a>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h2 class="text-center mb-5">Explore Healthy Meal Options</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card feature-card">
+                    <img src="https://images.unsplash.com/photo-1561948951-1b1f72a698ed" alt="Healthy Meal">
+                    <div class="card-body">
+                        <h5 class="card-title">High Protein Meals</h5>
+                        <p class="card-text">Discover meals that help you build muscle and stay healthy.</p>
+                        <a href="{{ url_for('recommendations') }}" class="btn btn-primary">View Recipes</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card feature-card">
+                    <img src="https://images.unsplash.com/photo-1568600983-2e7d61d0d0f4" alt="Vegan Meal">
+                    <div class="card-body">
+                        <h5 class="card-title">Vegan Meals</h5>
+                        <p class="card-text">Plant-based meals for a healthy lifestyle.</p>
+                        <a href="{{ url_for('recommendations') }}" class="btn btn-primary">View Recipes</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card feature-card">
+                    <img src="https://images.unsplash.com/photo-1588032472588-02c35bdf3b0e" alt="Low-carb Meal">
+                    <div class="card-body">
+                        <h5 class="card-title">Low-Carb Meals</h5>
+                        <p class="card-text">Healthy and tasty low-carb meal options.</p>
+                        <a href="{{ url_for('recommendations') }}" class="btn btn-primary">View Recipes</a>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center mt-5">
+        <p>&copy; 2025 Meal Mate | All Rights Reserved</p>
+    </footer>
+
+    <!-- Include Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

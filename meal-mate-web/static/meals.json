@@ -1,0 +1,123 @@
+[
+    {
+      "name": "Avocado Toast",
+      "description": "Whole grain toast topped with mashed avocado, cherry tomatoes, and a sprinkle of chia seeds.",
+      "category": "Breakfast",
+      "ingredients": ["Whole grain bread", "Avocado", "Tomatoes", "Chia seeds"],
+      "calories": 250,
+      "diet": "Vegan"
+    },
+    {
+      "name": "Grilled Chicken Salad",
+      "description": "Grilled chicken breast with mixed greens, cucumbers, and a balsamic vinaigrette dressing.",
+      "category": "Lunch",
+      "ingredients": ["Chicken breast", "Mixed greens", "Cucumbers", "Balsamic vinaigrette"],
+      "calories": 400,
+      "diet": "High-protein"
+    },
+    {
+      "name": "Quinoa and Veggie Stir-fry",
+      "description": "Stir-fried quinoa with a variety of vegetables like bell peppers, broccoli, and carrots.",
+      "category": "Dinner",
+      "ingredients": ["Quinoa", "Bell peppers", "Broccoli", "Carrots", "Soy sauce"],
+      "calories": 350,
+      "diet": "Vegan"
+    },
+    {
+      "name": "Chia Pudding with Berries",
+      "description": "Chia seeds soaked overnight in almond milk, topped with fresh berries.",
+      "category": "Snack",
+      "ingredients": ["Chia seeds", "Almond milk", "Berries"],
+      "calories": 200,
+      "diet": "Vegan"
+    },
+    {
+      "name": "Greek Yogurt with Honey and Walnuts",
+      "description": "Creamy Greek yogurt topped with honey and crunchy walnuts.",
+      "category": "Snack",
+      "ingredients": ["Greek yogurt", "Honey", "Walnuts"],
+      "calories": 300,
+      "diet": "High-protein"
+    },
+    {
+      "name": "Salmon with Steamed Asparagus",
+      "description": "Grilled salmon fillet served with steamed asparagus and a lemon wedge.",
+      "category": "Dinner",
+      "ingredients": ["Salmon", "Asparagus", "Lemon"],
+      "calories": 500,
+      "diet": "High-protein"
+    },
+    {
+      "name": "Sweet Potato and Black Bean Tacos",
+      "description": "Soft corn tortillas filled with roasted sweet potato and seasoned black beans.",
+      "category": "Lunch",
+      "ingredients": ["Sweet potato", "Black beans", "Corn tortillas", "Spices"],
+      "calories": 350,
+      "diet": "Vegan"
+    },
+    {
+      "name": "Oatmeal with Almond Butter and Banana",
+      "description": "Whole oats cooked with almond butter and topped with sliced banana.",
+      "category": "Breakfast",
+      "ingredients": ["Oats", "Almond butter", "Banana"],
+      "calories": 350,
+      "diet": "Vegan"
+    },
+        {
+          "name": "Spinach and Lentil Soup",
+          "description": "A hearty soup made with spinach, lentils, and spices, packed with iron.",
+          "category": "Dinner",
+          "ingredients": ["Spinach", "Lentils", "Garlic", "Onion", "Cumin", "Tomatoes"],
+          "calories": 350,
+          "diet": "Vegan",
+          "high_iron": true
+        },
+        {
+          "name": "Grilled Steak with Roasted Vegetables",
+          "description": "A juicy grilled steak served with roasted potatoes and green beans, rich in iron.",
+          "category": "Dinner",
+          "ingredients": ["Beef steak", "Potatoes", "Green beans", "Olive oil", "Garlic"],
+          "calories": 500,
+          "diet": "High-protein",
+          "high_iron": true
+        },
+        {
+          "name": "Tofu Stir-fry with Bok Choy",
+          "description": "Stir-fried tofu with bok choy and a savory soy-based sauce, full of plant-based iron.",
+          "category": "Lunch",
+          "ingredients": ["Tofu", "Bok choy", "Carrots", "Soy sauce", "Ginger"],
+          "calories": 350,
+          "diet": "Vegan",
+          "high_iron": true
+        },
+        {
+          "name": "Chickpea and Quinoa Salad",
+          "description": "A refreshing salad with chickpeas, quinoa, and greens, offering a great source of iron.",
+          "category": "Lunch",
+          "ingredients": ["Chickpeas", "Quinoa", "Spinach", "Olive oil", "Lemon"],
+          "calories": 400,
+          "diet": "Vegan",
+          "high_iron": true
+        },
+        {
+          "name": "Salmon with Steamed Kale",
+          "description": "Grilled salmon served with steamed kale, a meal rich in both iron and omega-3s.",
+          "category": "Dinner",
+          "ingredients": ["Salmon", "Kale", "Lemon", "Olive oil", "Garlic"],
+          "calories": 450,
+          "diet": "High-protein",
+          "high_iron": true
+        },
+        {
+          "name": "Iron-Rich Smoothie",
+          "description": "A smoothie made with spinach, banana, and fortified plant milk, packed with iron.",
+          "category": "Breakfast",
+          "ingredients": ["Spinach", "Banana", "Almond milk", "Chia seeds"],
+          "calories": 250,
+          "diet": "Vegan",
+          "high_iron": true
+        }
+      ]
+      
+  
+  

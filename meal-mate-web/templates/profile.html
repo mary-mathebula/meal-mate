@@ -3,12 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
+    <title>{{ profile.name }}'s Profile</title>
 </head>
 <body>
     <h1>{{ profile.name }}'s Profile</h1>
     <p>Age: {{ profile.age }}</p>
     <p>Health Condition: {{ profile.health_condition }}</p>
+
+    <!-- Button to view meal recommendations -->
+    <a href="{{ url_for('recommendations') }}">View Food Recommendations</a><br><br>
+
     <a href="{{ url_for('index') }}">Go Back to Home</a>
 </body>
 </html>

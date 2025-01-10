@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Profiles</title>
+</head>
+<body>
+    <h1>All Profiles</h1>
+    <ul>
+        {% for profile in profiles %}
+            <li>
+                <a href="{{ url_for('profile', profile_id=profile.id) }}">
+                    {{ profile.name }} (Age: {{ profile.age }}, Health Condition: {{ profile.health_condition }})
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('index') }}">Go Back to Home</a>
+</body>
+</html>

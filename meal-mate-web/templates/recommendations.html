@@ -7,11 +7,52 @@
 </head>
 <body>
     <h1>Today's Food Recommendations</h1>
+
+    <!-- Filter options -->
+    <form method="get" action="{{ url_for('recommendations') }}">
+        <label for="diet">Diet:</label>
+        <select name="diet" id="diet">
+            <option value="">Select Diet</option>
+            <option value="Vegan">Vegan</option>
+            <option value="High-protein">High-protein</option>
+            <option value="Gluten-free">Gluten-free</option>
+        </select>
+
+        <label for="category">Category:</label>
+        <select name="category" id="category">
+            <option value="">Select Category</option>
+            <option value="Breakfast">Breakfast</option>
+            <option value="Lunch">Lunch</option>
+            <option value="Dinner">Dinner</option>
+            <option value="Snack">Snack</option>
+        </select>
+
+        <label for="high_iron">High Iron:</label>
+        <select name="high_iron" id="high_iron">
+            <option value="">Select</option>
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+        </select>
+
+        <button type="submit">Filter</button>
+    </form>
+
     <ul>
         {% for meal in meals %}
-            <li>{{ meal['name'] }}: {{ meal['description'] }}</li>
+            <li>
+                <strong>{{ meal['name'] }}</strong>: {{ meal['description'] }}
+                <ul>
+                    <li>Calories: {{ meal['calories'] }} kcal</li>
+                    <li>Diet: {{ meal['diet'] }}</li>
+                    <li>Category: {{ meal['category'] }}</li>
+                    {% if meal['high_iron'] %}
+                        <li><strong>High in Iron</strong></li>
+                    {% endif %}
+                </ul>
+            </li>
         {% endfor %}
     </ul>
+    
     <a href="{{ url_for('index') }}">Go Back to Home</a>
 </body>
 </html>
