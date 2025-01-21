@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Recommendation App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            color: #343a40;
+        }
+        .form-control, .btn {
+            margin: 10px 0;
+        }
+        .recommendation {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Meal Recommendation App</h1>
+            <p>Select your health condition and meal time to get a personalized recommendation!</p>
+        </div>
+        <form id="recommendation-form">
+            <div class="mb-3">
+                <label for="condition" class="form-label">Health Condition</label>
+                <select class="form-select" id="condition" required>
+                    <option value="" disabled selected>Select a condition</option>
+                    <option value="low blood">Low Blood</option>
+                    <option value="ulcers">Ulcers</option>
+                    <option value="low blood - vegetarian">Low Blood - Vegetarian</option>
+                    <option value="ulcers - gluten-free">Ulcers - Gluten-Free</option>
+                    <option value="low blood - snack">Low Blood - Snack</option>
+                    <option value="ulcers - mild">Ulcers - Mild</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="meal_time" class="form-label">Meal Time</label>
+                <select class="form-select" id="meal_time" required>
+                    <option value="" disabled selected>Select a meal time</option>
+                    <option value="breakfast">Breakfast</option>
+                    <option value="lunch">Lunch</option>
+                    <option value="dinner">Dinner</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Get Recommendation</button>
+        </form>
+        <div id="recommendation" class="recommendation" style="display: none;"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#recommendation-form').on('submit', function (e) {
+                e.preventDefault();
+
+                const condition = $('#condition').val();
+                const meal_time = $('#meal_time').val();
+
+                if (!condition || !meal_time) {
+                    alert('Please select both a health condition and meal time.');
+                    return;
+                }
+
+                // Send data to backend
+                $.ajax({
+                    url: '/',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ condition, meal_time }),
+                    success: function (response) {
+                        if (response.recommendation) {
+                            $('#recommendation').show().html(`<strong>Recommendation:</strong> ${response.recommendation}`);
+                        } else {
+                            $('#recommendation').show().html(`<strong>Error:</strong> No recommendations available for this selection.`);
+                        }
+                    },
+                    error: function () {
+                        alert('An error occurred while fetching the recommendation. Please try again later.');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
