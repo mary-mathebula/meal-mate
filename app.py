@@ -1,113 +1,52 @@
-
 from flask import Flask, render_template, request, jsonify
+import requests
 import random
 
 app = Flask(__name__)
 
-meal_recommendations = {
-    "low blood": {
-        "breakfast": [
-            "Oatmeal with banana and almond butter.",
-            "Whole grain toast with scrambled eggs and avocado.",
-            "Greek yogurt with mixed berries and walnuts."
-        ],
-        "lunch": [
-            "Grilled chicken salad with spinach, quinoa, and pumpkin seeds.",
-            "Beef stir-fry with broccoli and brown rice.",
-            "Lentil soup with a side of whole-grain bread."
-        ],
-        "dinner": [
-            "Grilled steak with roasted sweet potatoes and green beans.",
-            "Chicken curry with lentils and brown rice.",
-            "Baked salmon with steamed broccoli and quinoa."
-        ]
-    },
-    "ulcers": {
-        "breakfast": [
-            "Oatmeal with honey and a banana, paired with chamomile tea.",
-            "Boiled eggs with a slice of whole wheat toast.",
-            "Rice porridge with a bit of cinnamon and apple slices."
-        ],
-        "lunch": [
-            "Grilled chicken with mashed potatoes and steamed zucchini.",
-            "Baked fish with mashed sweet potatoes and boiled carrots.",
-            "Toasted sandwich with mild cheese and cucumber."
-        ],
-        "dinner": [
-            "Chicken breast with a side of boiled rice and carrots.",
-            "Grilled turkey with roasted butternut squash and green beans.",
-            "Steamed cod with mashed cauliflower and green peas."
-        ]
-    },
-    "low blood - vegetarian": {
-        "breakfast": [
-            "Spinach smoothie with almond milk and a side of toast.",
-            "Chia pudding with fresh berries and honey.",
-            "Avocado toast topped with hemp seeds and lemon."
-        ],
-        "lunch": [
-            "Lentil salad with roasted vegetables and arugula.",
-            "Vegetable curry with brown rice.",
-            "Stuffed bell peppers with quinoa and chickpeas."
-        ],
-        "dinner": [
-            "Vegetable stir-fry with tofu and soba noodles.",
-            "Grilled eggplant with tahini sauce and a side of couscous.",
-            "Minestrone soup with a slice of whole-grain bread."
-        ]
-    },
-    "ulcers - gluten-free": {
-        "breakfast": [
-            "Rice porridge with boiled apples and honey.",
-            "Smoothie bowl with blended papaya, banana, and coconut flakes.",
-            "Eggs with mashed avocado and gluten-free toast."
-        ],
-        "lunch": [
-            "Grilled chicken with mashed cauliflower and steamed carrots.",
-            "Baked salmon with roasted sweet potatoes and zucchini.",
-            "Turkey lettuce wraps with cucumber and hummus."
-        ],
-        "dinner": [
-            "Herb-roasted chicken with mashed pumpkin and green beans.",
-            "Grilled cod with a side of quinoa and sautéed spinach.",
-            "Beef stew with gluten-free dumplings and steamed broccoli."
-        ]
-    },
-    "low blood - snack": {
-        "breakfast": [
-            "A boiled egg with a slice of avocado and a small handful of walnuts.",
-            "Apple slices with peanut butter.",
-            "Trail mix with dried fruits and nuts."
-        ],
-        "lunch": [
-            "Smoothie made with spinach, banana, and orange juice.",
-            "Hummus with carrot and cucumber sticks.",
-            "Hard-boiled eggs with cherry tomatoes and a sprinkle of salt."
-        ],
-        "dinner": [
-            "Yogurt parfait with granola and honey.",
-            "Cheese cubes with grapes and whole-grain crackers.",
-            "Pumpkin seeds with a glass of fortified plant-based milk."
-        ]
-    },
-    "ulcers - mild": {
-        "breakfast": [
-            "Plain yogurt with soft, ripe bananas and a drizzle of honey.",
-            "Rice pudding made with almond milk and cinnamon.",
-            "Mashed avocado on soft toast with a sprinkle of salt."
-        ],
-        "lunch": [
-            "Chicken soup with soft vegetables like carrots and potatoes.",
-            "Steamed pumpkin with boiled chicken breast.",
-            "Grilled turkey with a side of mashed squash."
-        ],
-        "dinner": [
-            "Baked fish with soft sweet potato mash.",
-            "Rice and steamed carrots with a drizzle of olive oil.",
-            "Poached chicken with mashed cauliflower and boiled zucchini."
-        ]
-    }
+# Define the Spoonacular API URL and key
+API_URL = "https://api.spoonacular.com/recipes/complexSearch"
+API_KEY = "2ea52454f1b847d18e6190a5a4da19b1"  # Replace with your Spoonacular API Key
+
+condition_mapping = {
+    "low blood": "low-sugar",        # Example: You might want a low-sugar diet for low blood
+    "ulcers": "gluten-free",         # Example: Ulcers may benefit from a gluten-free diet
+    "low blood - vegetarian": "vegetarian",
+    "ulcers - gluten-free": "gluten-free",
+    "low blood - snack": "low-sugar",
+    "ulcers - mild": "mild"
 }
+
+
+def fetch_meal_recommendations(condition, meal_time, allergies):
+    # Map condition to a valid Spoonacular diet type
+    diet_type = condition_mapping.get(condition.lower(), "")
+    
+    # Debugging: log the diet type
+    print(f"Fetching meals with diet: {diet_type}, meal time: {meal_time}, allergies: {','.join(allergies)}")
+
+    query_params = {
+        "apiKey": API_KEY,
+        "diet": diet_type,       # Using diet type based on the condition
+        "type": meal_time,       # breakfast, lunch, or dinner
+        "intolerances": ','.join(allergies), # Include allergies in the query
+        "number": 20             # You can adjust this number based on how many meals you want
+    }
+
+    try:
+        response = requests.get(API_URL, params=query_params)
+        response.raise_for_status()
+        meals = response.json().get('results', [])
+        
+        # If no meals are returned, log this and handle gracefully
+        if not meals:
+            print(f"No meals found for {condition} and {meal_time}.")
+        
+        return meals
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching meals: {e}")
+        return []
 
 
 @app.route('/')
@@ -120,27 +59,16 @@ def get_recommendation():
     meal_time = request.json.get('meal_time')
     allergies = request.json.get('allergies', [])
 
-    # Log received data for debugging
-    print(f"Received condition: {condition}, meal_time: {meal_time}, allergies: {allergies}")
-
     if not condition or not meal_time:
         return jsonify({'recommendation': 'Invalid input. Please select both a condition and meal time.'})
 
-    # Get recommendations based on condition and meal time
-    recommendations = meal_recommendations.get(condition.lower(), {}).get(meal_time.lower(), [])
-
-    # Filter recommendations based on allergies
-    filtered_recommendations = [
-        meal for meal in recommendations
-        if not any(allergen in meal.lower() for allergen in allergies)
-    ]
-
-    # Log filtered recommendations for debugging
-    print(f"Filtered recommendations: {filtered_recommendations}")
-
-    if filtered_recommendations:
-        recommendation = random.choice(filtered_recommendations)
-        return jsonify({'recommendation': recommendation})
+    # Fetch meal recommendations from the API
+    meals = fetch_meal_recommendations(condition, meal_time, allergies)
+    
+    if meals:
+        # Randomly pick a meal to display
+        recommendation = random.choice(meals)
+        return jsonify({'recommendation': recommendation['title']})
     else:
         return jsonify({'recommendation': 'No recommendations available for this condition and meal time. Please try another combination.'})
 
