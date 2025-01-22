@@ -1,3 +1,4 @@
+
 from flask import Flask, render_template, request, jsonify
 import random
 
@@ -108,17 +109,19 @@ meal_recommendations = {
     }
 }
 
+
 @app.route('/')
 def index():
-    return render_template('index.html', recommendation=None)
+    return render_template('index.html')
 
 @app.route('/', methods=['POST'])
 def get_recommendation():
     condition = request.json.get('condition')
     meal_time = request.json.get('meal_time')
+    allergies = request.json.get('allergies', [])
 
     # Log received data for debugging
-    print(f"Received condition: {condition}, meal_time: {meal_time}")
+    print(f"Received condition: {condition}, meal_time: {meal_time}, allergies: {allergies}")
 
     if not condition or not meal_time:
         return jsonify({'recommendation': 'Invalid input. Please select both a condition and meal time.'})
@@ -126,11 +129,17 @@ def get_recommendation():
     # Get recommendations based on condition and meal time
     recommendations = meal_recommendations.get(condition.lower(), {}).get(meal_time.lower(), [])
 
-    # Log recommendations for debugging
-    print(f"Found recommendations: {recommendations}")
+    # Filter recommendations based on allergies
+    filtered_recommendations = [
+        meal for meal in recommendations
+        if not any(allergen in meal.lower() for allergen in allergies)
+    ]
 
-    if recommendations:
-        recommendation = random.choice(recommendations)
+    # Log filtered recommendations for debugging
+    print(f"Filtered recommendations: {filtered_recommendations}")
+
+    if filtered_recommendations:
+        recommendation = random.choice(filtered_recommendations)
         return jsonify({'recommendation': recommendation})
     else:
         return jsonify({'recommendation': 'No recommendations available for this condition and meal time. Please try another combination.'})

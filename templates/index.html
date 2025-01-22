@@ -12,6 +12,7 @@
         }
         .container {
             margin-top: 50px;
+            padding: 15px;
         }
         .header {
             text-align: center;
@@ -24,12 +25,16 @@
         .form-control, .btn {
             margin: 10px 0;
         }
-        .recommendation {
+        .recommendation, #loading {
             margin-top: 20px;
             padding: 20px;
             border: 1px solid #dee2e6;
             border-radius: 5px;
             background-color: #ffffff;
+        }
+        #loading {
+            display: none;
+            text-align: center;
         }
     </style>
 </head>
@@ -39,10 +44,10 @@
             <h1>Meal Recommendation App</h1>
             <p>Select your health condition and meal time to get a personalized recommendation!</p>
         </div>
-        <form id="recommendation-form">
+        <form id="recommendation-form" aria-labelledby="form-heading">
             <div class="mb-3">
                 <label for="condition" class="form-label">Health Condition</label>
-                <select class="form-select" id="condition" required>
+                <select class="form-select" id="condition" aria-label="Select health condition" required>
                     <option value="" disabled selected>Select a condition</option>
                     <option value="low blood">Low Blood</option>
                     <option value="ulcers">Ulcers</option>
@@ -53,8 +58,19 @@
                 </select>
             </div>
             <div class="mb-3">
+                <label for="allergies" class="form-label">Allergies (Optional)</label>
+                <select class="form-select" id="allergies" multiple>
+                    <option value="nuts">Nuts</option>
+                    <option value="dairy">Dairy</option>
+                    <option value="gluten">Gluten</option>
+                    <option value="seafood">Seafood</option>
+                    <option value="soy">Soy</option>
+                </select>
+                <small class="form-text text-muted">Hold down Ctrl (Windows) or Command (Mac) to select multiple allergies.</small>
+            </div>            
+            <div class="mb-3">
                 <label for="meal_time" class="form-label">Meal Time</label>
-                <select class="form-select" id="meal_time" required>
+                <select class="form-select" id="meal_time" aria-label="Select meal time" required>
                     <option value="" disabled selected>Select a meal time</option>
                     <option value="breakfast">Breakfast</option>
                     <option value="lunch">Lunch</option>
@@ -63,40 +79,63 @@
             </div>
             <button type="submit" class="btn btn-primary">Get Recommendation</button>
         </form>
-        <div id="recommendation" class="recommendation" style="display: none;"></div>
+        <div id="loading">
+            <p>Fetching your meal recommendation...</p>
+        </div>
+        <div id="recommendation" class="recommendation" style="display: none;" aria-live="polite"></div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('#recommendation-form').on('submit', function (e) {
-                e.preventDefault();
+            const form = $('#recommendation-form');
+            const condition = $('#condition');
+            const mealTime = $('#meal_time');
+            const loading = $('#loading');
+            const recommendationDiv = $('#recommendation');
+            const submitButton = form.find('button[type="submit"]');
 
-                const condition = $('#condition').val();
-                const meal_time = $('#meal_time').val();
+            form.on('submit', function (e) {
+    e.preventDefault();
 
-                if (!condition || !meal_time) {
-                    alert('Please select both a health condition and meal time.');
-                    return;
+    const condition = $('#condition').val();
+    const mealTime = $('#meal_time').val();
+    const allergies = $('#allergies').val(); // Get selected allergies
+
+    if (!condition || !mealTime) {
+        alert('Please select both a health condition and meal time.');
+        return;
+    }
+
+    // Clear previous results
+    recommendationDiv.hide().html('');
+    loading.show();
+    submitButton.prop('disabled', true);
+
+    setTimeout(() => {
+        $.ajax({
+            url: '/',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ condition, meal_time: mealTime, allergies }),
+            success: function (response) {
+                loading.hide();
+                submitButton.prop('disabled', false);
+
+                if (response.recommendation) {
+                    recommendationDiv.show().html(`<strong>Recommendation:</strong> ${response.recommendation}`);
+                } else {
+                    recommendationDiv.show().html(`<strong>Error:</strong> No recommendations available for this selection.`);
                 }
+            },
+            error: function () {
+                loading.hide();
+                submitButton.prop('disabled', false);
+                recommendationDiv.show().html(`<strong>Error:</strong> An error occurred while fetching the recommendation. Please try again later.`);
+            }
+        });
+    }, 4000); // Simulates a 4-second delay
 
-                // Send data to backend
-                $.ajax({
-                    url: '/',
-                    method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({ condition, meal_time }),
-                    success: function (response) {
-                        if (response.recommendation) {
-                            $('#recommendation').show().html(`<strong>Recommendation:</strong> ${response.recommendation}`);
-                        } else {
-                            $('#recommendation').show().html(`<strong>Error:</strong> No recommendations available for this selection.`);
-                        }
-                    },
-                    error: function () {
-                        alert('An error occurred while fetching the recommendation. Please try again later.');
-                    }
-                });
             });
         });
     </script>
